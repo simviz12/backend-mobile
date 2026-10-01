@@ -20,19 +20,27 @@ describe('RegisterUserUseCase', () => {
   });
 
   it('should throw BadRequestException if user already exists', async () => {
-    const dto: RegisterUserDto = { email: 'test@example.com', password: 'password123' };
-    mockUserRepository.findByEmail.mockResolvedValue(User.create({
-      id: '123',
-      email: Email.create(dto.email),
-      password: await Password.create(dto.password),
-      createdAt: new Date()
-    }));
+    const dto: RegisterUserDto = {
+      email: 'test@example.com',
+      password: 'password123',
+    };
+    mockUserRepository.findByEmail.mockResolvedValue(
+      User.create({
+        id: '123',
+        email: Email.create(dto.email),
+        password: await Password.create(dto.password),
+        createdAt: new Date(),
+      }),
+    );
 
     await expect(useCase.execute(dto)).rejects.toThrow(BadRequestException);
   });
 
   it('should successfully register a new user', async () => {
-    const dto: RegisterUserDto = { email: 'test@example.com', password: 'password123' };
+    const dto: RegisterUserDto = {
+      email: 'test@example.com',
+      password: 'password123',
+    };
     mockUserRepository.findByEmail.mockResolvedValue(null);
 
     const result = await useCase.execute(dto);

@@ -6,7 +6,10 @@ export class Password {
     public readonly isHashed: boolean,
   ) {}
 
-  public static async create(password: string, isHashed = false): Promise<Password> {
+  public static async create(
+    password: string,
+    isHashed = false,
+  ): Promise<Password> {
     if (!isHashed) {
       if (password.length < 6) {
         throw new Error('Password must be at least 6 characters long');
