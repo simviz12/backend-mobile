@@ -1,5 +1,8 @@
 import { Inject, Injectable, BadRequestException } from '@nestjs/common';
-import { IUserRepository, USER_REPOSITORY } from '../../domain/repositories/user.repository.interface';
+import {
+  IUserRepository,
+  USER_REPOSITORY,
+} from '../../domain/repositories/user.repository.interface';
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { Email } from '../../domain/value-objects/email.value-object';
 import { Password } from '../../domain/value-objects/password.value-object';
@@ -14,14 +17,14 @@ export class RegisterUserUseCase {
 
   async execute(dto: RegisterUserDto): Promise<{ id: string; email: string }> {
     const email = Email.create(dto.email);
-    
+
     const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {
       throw new BadRequestException('User with this email already exists');
     }
 
     const password = await Password.create(dto.password);
-    
+
     const user = User.create({
       id: uuidv4(),
       email,
