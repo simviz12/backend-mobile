@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: Guardian Mobile API
+  description: The remote anti-theft system API for Android phones. Endpoints marked as "(planned)" are not yet implemented.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterUserDto:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+    
+    LoginUserDto:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    RefreshTokenDto:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+
+    TokensResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+
+    DeviceDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        ownerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        mode:
+          type: string
+          enum: [PROTECTED, CONTROLLER]
+        fcmToken:
+          type: string
+        platform:
+          type: string
+        lastSeenAt:
+          type: string
+          format: date-time
+
+    LinkDeviceDto:
+      type: object
+      required:
+        - name
+        - mode
+        - platform
+      properties:
+        name:
+          type: string
+        mode:
+          type: string
+          enum: [PROTECTED, CONTROLLER]
+        platform:
+          type: string
+        fcmToken:
+          type: string
+
+    CommandDto:
+      type: object
+      required:
+        - commandType
+        - targetDeviceId
+      properties:
+        commandType:
+          type: string
+          enum: [RING, LOCATE, LOCK, SHOW_MESSAGE, VIBRATE, THEFT_MODE, WIPE]
+        targetDeviceId:
+          type: string
+          format: uuid
+        payload:
+          type: object
+          description: "Optional data like a custom message to show, or coordinates."
+        
+    LocationDto:
+      type: object
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+        accuracy:
+          type: number
+        timestamp:
+          type: string
+          format: date-time
+
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+    BadRequestError:
+      description: Bad Request
+    NotFoundError:
+      description: Not Found
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserDto'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  /auth/login:
+    post:
+      summary: Login
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserDto'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokensResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/refresh:
+    post:
+      summary: Refresh Access Token
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenDto'
+      responses:
+        '200':
+          description: Tokens refreshed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokensResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/logout:
+    post:
+      summary: Logout and revoke refresh tokens
+      tags:
+        - Auth
+      responses:
+        '204':
+          description: Logged out successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/2fa/setup:
+    post:
+      summary: (planned) Setup 2FA
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: QR code for 2FA setup
+
+  /auth/2fa/verify:
+    post:
+      summary: (planned) Verify 2FA token
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: 2FA verified
+
+  /devices:
+    get:
+      summary: (planned) Get linked devices
+      tags:
+        - Devices
+      responses:
+        '200':
+          description: List of devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceDto'
+    post:
+      summary: (planned) Link a new device
+      tags:
+        - Devices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkDeviceDto'
+      responses:
+        '201':
+          description: Device linked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceDto'
+
+  /commands:
+    post:
+      summary: (planned) Send a remote command to a protected device
+      tags:
+        - Commands
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommandDto'
+      responses:
+        '202':
+          description: Command accepted and queued/sent
+        '403':
+          description: Forbidden (Command ownership check failed)
+
+  /locations/{deviceId}:
+    get:
+      summary: (planned) Get device location history
+      tags:
+        - Locations
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Location history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationDto'
+
+  /locations:
+    post:
+      summary: (planned) Report current location (from protected device)
+      tags:
+        - Locations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationDto'
+      responses:
+        '201':
+          description: Location saved
+
+  /status:
+    get:
+      summary: (planned) System status
+      tags:
+        - Status
+      security: []
+      responses:
+        '200':
+          description: System is running
