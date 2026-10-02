@@ -66,3 +66,7 @@ This project strictly adheres to Clean Architecture:
 ## Day 6: Devices Linking
 - Created Device model and DeviceMode enum.
 - Created LinkDeviceUseCase and POST /devices endpoint.
+
+## Day 8 (Real Day 7): Devices Management
+- Implemented GET /devices, GET /devices/:id, PATCH /devices/:id, DELETE /devices/:id endpoints.
+- Added ownership verification.

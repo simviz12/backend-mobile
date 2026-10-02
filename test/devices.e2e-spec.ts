@@ -80,4 +80,58 @@ describe('DevicesController (e2e)', () => {
       })
       .expect(401);
   });
+
+  it('/devices (GET) - should return list of devices', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/devices')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+    expect(res.body.length).toBeGreaterThan(0);
+  });
+
+  it('/devices/:id (GET) - should return a device', async () => {
+    // Get the device ID from the previous list
+    const resList = await request(app.getHttpServer())
+      .get('/devices')
+      .set('Authorization', `Bearer ${accessToken}`);
+    const devId = resList.body[0].id;
+
+    const res = await request(app.getHttpServer())
+      .get(`/devices/${devId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+    expect(res.body.id).toBe(devId);
+  });
+
+  it('/devices/:id (PATCH) - should update a device', async () => {
+    const resList = await request(app.getHttpServer())
+      .get('/devices')
+      .set('Authorization', `Bearer ${accessToken}`);
+    const devId = resList.body[0].id;
+
+    const res = await request(app.getHttpServer())
+      .patch(`/devices/${devId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({ name: 'Updated Name' })
+      .expect(200);
+    expect(res.body.name).toBe('Updated Name');
+  });
+
+  it('/devices/:id (DELETE) - should delete a device', async () => {
+    const resList = await request(app.getHttpServer())
+      .get('/devices')
+      .set('Authorization', `Bearer ${accessToken}`);
+    const devId = resList.body[0].id;
+
+    await request(app.getHttpServer())
+      .delete(`/devices/${devId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(204);
+
+    // Verify it's gone
+    await request(app.getHttpServer())
+      .get(`/devices/${devId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
+  });
 });
