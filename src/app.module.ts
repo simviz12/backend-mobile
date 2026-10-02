@@ -4,6 +4,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { DevicesModule } from './modules/devices/devices.module';
 import { CommandsModule } from './modules/commands/commands.module';
+import { LocationsModule } from './modules/locations/locations.module';
 import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
 
 @Module({
@@ -13,6 +14,7 @@ import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
     UsersModule,
     DevicesModule,
     CommandsModule,
+    LocationsModule,
     PrismaModule,
   ],
   controllers: [],

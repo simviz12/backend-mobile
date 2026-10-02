@@ -84,3 +84,9 @@ This project strictly adheres to Clean Architecture:
 - GET /devices/:id/commands with pagination and status filter.
 - PATCH /devices/:id/commands/:commandId/ack endpoint for device acknowledgment.
 - Coverage >= 80%.
+
+## Day 11: Locations
+- POST /devices/:id/locations to record GPS coordinates.
+- GET /devices/:id/locations?from=&to= with pagination.
+- Coordinate range validation in domain entity.
+- DB index on (deviceId, recordedAt).
