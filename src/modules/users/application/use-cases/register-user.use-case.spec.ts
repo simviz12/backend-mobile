@@ -1,5 +1,6 @@
+import { jest } from '@jest/globals';
 import { RegisterUserUseCase } from './register-user.use-case';
-import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { BadRequestException } from '@nestjs/common';
 import { User } from '../../domain/entities/user.entity';
@@ -50,3 +51,4 @@ describe('RegisterUserUseCase', () => {
     expect(mockUserRepository.save).toHaveBeenCalledTimes(1);
   });
 });
+

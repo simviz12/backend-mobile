@@ -1,10 +1,11 @@
+import { jest } from '@jest/globals';
 import { LoginUserUseCase } from './login-user.use-case';
-import { IUserRepository } from '../../users/domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../../users/domain/repositories/user.repository.interface';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { UnauthorizedException } from '@nestjs/common';
-import { User } from '../../users/domain/entities/user.entity';
-import { Email } from '../../users/domain/value-objects/email.value-object';
-import { Password } from '../../users/domain/value-objects/password.value-object';
+import { User } from '../../../users/domain/entities/user.entity';
+import { Email } from '../../../users/domain/value-objects/email.value-object';
+import { Password } from '../../../users/domain/value-objects/password.value-object';
 
 describe('LoginUserUseCase', () => {
   let useCase: LoginUserUseCase;
@@ -71,3 +72,4 @@ describe('LoginUserUseCase', () => {
     expect(result.id).toBe('123');
   });
 });
+

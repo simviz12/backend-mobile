@@ -1,10 +1,8 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginUserDto } from '../dtos/login-user.dto';
 import { Email } from '../../../users/domain/value-objects/email.value-object';
-import {
-  IUserRepository,
-  USER_REPOSITORY,
-} from '../../../users/domain/repositories/user.repository.interface';
+import { USER_REPOSITORY } from '../../../users/domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../../users/domain/repositories/user.repository.interface';
 
 @Injectable()
 export class LoginUserUseCase {

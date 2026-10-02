@@ -1,8 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
-import {
-  IUserRepository,
-  USER_REPOSITORY,
-} from '../../domain/repositories/user.repository.interface';
+import { USER_REPOSITORY } from '../../domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { User, UserProps } from '../../domain/entities/user.entity';
 import { Email } from '../../domain/value-objects/email.value-object';
 import { Password } from '../../domain/value-objects/password.value-object';
