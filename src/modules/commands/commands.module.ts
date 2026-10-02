@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CommandsController } from './presentation/controllers/commands.controller';
 import { CreateCommandUseCase } from './application/use-cases/create-command.use-case';
+import { GetCommandsUseCase } from './application/use-cases/get-commands.use-case';
+import { AckCommandUseCase } from './application/use-cases/ack-command.use-case';
 import { PrismaCommandRepository } from './infrastructure/repositories/prisma-command.repository';
 import { COMMAND_REPOSITORY } from './domain/repositories/command.repository.interface';
 import { DevicesModule } from '../devices/devices.module';
@@ -13,6 +15,8 @@ import { CommandExpirationJob } from './infrastructure/jobs/command-expiration.j
   controllers: [CommandsController],
   providers: [
     CreateCommandUseCase,
+    GetCommandsUseCase,
+    AckCommandUseCase,
     CommandExpirationJob,
     {
       provide: COMMAND_REPOSITORY,

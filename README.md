@@ -79,3 +79,8 @@ This project strictly adheres to Clean Architecture:
 - Integrated Firebase Admin SDK via PushNotificationPort.
 - Added command expiration job.
 - Mocked FCM for local tests.
+
+## Day 10: Commands History & Ack
+- GET /devices/:id/commands with pagination and status filter.
+- PATCH /devices/:id/commands/:commandId/ack endpoint for device acknowledgment.
+- Coverage >= 80%.
