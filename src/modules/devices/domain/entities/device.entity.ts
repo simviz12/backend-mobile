@@ -60,4 +60,8 @@ export class Device {
   updateFcmToken(token: string): void {
     this.props.fcmToken = token;
   }
+
+  updateName(name: string): void {
+    this.props.name = name;
+  }
 }

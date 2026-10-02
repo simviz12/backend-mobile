@@ -59,4 +59,8 @@ export class PrismaDeviceRepository implements IDeviceRepository {
       }),
     );
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.device.delete({ where: { id } });
+  }
 }
