@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { User } from './user.entity';
 import { Email } from '../value-objects/email.value-object';
 

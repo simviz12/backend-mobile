@@ -62,3 +62,7 @@ This project strictly adheres to Clean Architecture:
 - `src/modules/<feature>/application`: Use cases orchestrating domain rules.
 - `src/modules/<feature>/infrastructure`: Implementations (Prisma repositories, APIs).
 - `src/modules/<feature>/presentation`: REST Controllers, WebSocket Gateways.
+
+## Day 6: Devices Linking
+- Created Device model and DeviceMode enum.
+- Created LinkDeviceUseCase and POST /devices endpoint.
