@@ -42,6 +42,7 @@ model Device {
   lastSeenAt DateTime   @default(now())
   createdAt  DateTime   @default(now())
   commands   Command[]
+  locations  Location[]
 }
 
 enum CommandType {
@@ -72,4 +73,17 @@ model Command {
   status         CommandStatus @default(PENDING)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+}
+
+model Location {
+  id         String   @id @default(uuid())
+  deviceId   String
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  lat        Float
+  lng        Float
+  accuracy   Float?
+  recordedAt DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([deviceId, recordedAt])
 }
