@@ -9,3 +9,5 @@
 - **Branch**: `feature/auth-register-login`
 - **Status**: DONE
 - **Next Step**: PR and wait for Day 3.
+
+- Day 3 | feature/auth-jwt-refresh | PR Created | PENDING | Day 4
