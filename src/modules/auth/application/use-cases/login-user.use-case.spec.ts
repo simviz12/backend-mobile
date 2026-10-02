@@ -9,7 +9,9 @@ import { Password } from '../../../users/domain/value-objects/password.value-obj
 
 describe('LoginUserUseCase', () => {
   let useCase: LoginUserUseCase;
-  let mockUserRepository: jest.Mocked<IUserRepository>;
+  let mockUserRepository: any;
+  let mockRefreshTokenRepository: any;
+  let mockJwtService: any;
 
   beforeEach(() => {
     mockUserRepository = {
@@ -17,7 +19,13 @@ describe('LoginUserUseCase', () => {
       findByEmail: jest.fn(),
       findById: jest.fn(),
     };
-    useCase = new LoginUserUseCase(mockUserRepository);
+    mockRefreshTokenRepository = {
+      save: jest.fn(),
+    };
+    mockJwtService = {
+      signAsync: jest.fn().mockResolvedValue('mock-access-token'),
+    };
+    useCase = new LoginUserUseCase(mockUserRepository, mockRefreshTokenRepository, mockJwtService);
   });
 
   it('should throw UnauthorizedException if email is invalid', async () => {
@@ -68,8 +76,8 @@ describe('LoginUserUseCase', () => {
     );
 
     const result = await useCase.execute(dto);
-    expect(result.email).toBe(dto.email);
-    expect(result.id).toBe('123');
+    expect(result.accessToken).toBe('mock-access-token');
+    expect(result.refreshToken).toBeDefined();
   });
 });
 
