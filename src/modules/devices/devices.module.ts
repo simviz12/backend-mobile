@@ -13,5 +13,6 @@ import { DEVICE_REPOSITORY } from './domain/repositories/device.repository.inter
       useClass: PrismaDeviceRepository,
     },
   ],
+  exports: [DEVICE_REPOSITORY],
 })
 export class DevicesModule {}

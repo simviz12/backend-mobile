@@ -66,3 +66,7 @@ This project strictly adheres to Clean Architecture:
 ## Day 6: Devices Linking
 - Created Device model and DeviceMode enum.
 - Created LinkDeviceUseCase and POST /devices endpoint.
+
+## Day 7: Commands
+- Created Command model and endpoints.
+- Devices can now receive remote commands like RING, WIPE, etc.

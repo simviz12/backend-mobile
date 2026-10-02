@@ -41,4 +41,33 @@ model Device {
   fcmToken   String?
   lastSeenAt DateTime   @default(now())
   createdAt  DateTime   @default(now())
+  commands   Command[]
+}
+
+enum CommandType {
+  RING
+  LOCATE
+  LOCK
+  SHOW_MESSAGE
+  VIBRATE
+  THEFT_MODE
+  WIPE
+}
+
+enum CommandStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+}
+
+model Command {
+  id             String        @id @default(uuid())
+  targetDeviceId String
+  targetDevice   Device        @relation(fields: [targetDeviceId], references: [id], onDelete: Cascade)
+  commandType    CommandType
+  payload        Json?
+  status         CommandStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  sentAt         DateTime?
 }

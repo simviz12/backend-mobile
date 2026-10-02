@@ -17,3 +17,5 @@
 - Day 5 | feature/auth-hardening | PR Created | PENDING | Day 6
 
 - Day 6 | feature/devices-linking | PR Created | PENDING | Day 7
+
+- Day 7 | feature/commands | PR Created | PENDING | Day 8
