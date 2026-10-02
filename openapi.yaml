@@ -259,11 +259,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeviceDto'
 
-  /commands:
+  /devices/{deviceId}/commands:
     post:
       summary: (planned) Send a remote command to a protected device
       tags:
         - Commands
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         required: true
         content:
