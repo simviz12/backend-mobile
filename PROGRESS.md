@@ -11,3 +11,5 @@
 - **Next Step**: PR and wait for Day 3.
 
 - Day 3 | feature/auth-jwt-refresh | PR Created | PENDING | Day 4
+
+- Day 4 | feature/openapi-contract | PR Created | PENDING | Day 5
