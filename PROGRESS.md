@@ -13,3 +13,5 @@
 - Day 3 | feature/auth-jwt-refresh | PR Created | PENDING | Day 4
 
 - Day 4 | feature/openapi-contract | PR Created | PENDING | Day 5
+
+- Day 5 | feature/auth-hardening | PR Created | PENDING | Day 6

@@ -61,4 +61,28 @@ describe('RefreshTokensUseCase', () => {
 
     await expect(useCase.execute('expired-token')).rejects.toThrow(UnauthorizedException);
   });
+
+  it('should return new tokens on success', async () => {
+    const token = RefreshToken.create({
+      id: '1',
+      token: 'valid-token',
+      userId: 'user-1',
+      isRevoked: false,
+      expiresAt: new Date(Date.now() + 10000),
+      createdAt: new Date(),
+    });
+    mockRefreshTokenRepository.findByToken.mockResolvedValue(token);
+
+    mockUserRepository.findById.mockResolvedValue({
+      id: 'user-1',
+      email: { value: 'test@example.com' },
+    });
+
+    const result = await useCase.execute('valid-token');
+    
+    expect(result.accessToken).toBe('new-access-token');
+    expect(result.refreshToken).toBeDefined();
+    expect(token.isRevoked).toBe(true);
+    expect(mockRefreshTokenRepository.save).toHaveBeenCalledTimes(2); // once to revoke old, once to save new
+  });
 });
