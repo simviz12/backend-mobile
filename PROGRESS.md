@@ -19,3 +19,5 @@
 - Day 6 | feature/devices-linking | PR Created | PENDING | Day 7
 
 - Day 8 (Real Day 7) | feature/devices-management | PR Created | PENDING | Day 9
+
+- Day 8 | feature/commands-core | PR Created | PENDING | Day 9

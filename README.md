@@ -70,3 +70,7 @@ This project strictly adheres to Clean Architecture:
 ## Day 8 (Real Day 7): Devices Management
 - Implemented GET /devices, GET /devices/:id, PATCH /devices/:id, DELETE /devices/:id endpoints.
 - Added ownership verification.
+
+## Day 8: Commands Core
+- Created Command entity with state machine (PENDING, SENT, DELIVERED, EXECUTED, FAILED, EXPIRED).
+- Endpoint POST /devices/:id/commands implemented.
