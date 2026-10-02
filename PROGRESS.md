@@ -21,3 +21,5 @@
 - Day 8 (Real Day 7) | feature/devices-management | PR Created | PENDING | Day 9
 
 - Day 8 | feature/commands-core | PR Created | PENDING | Day 9
+
+- Day 9 | feature/fcm-delivery | PR Created | PENDING | Day 10
