@@ -19,6 +19,7 @@ export class PrismaDeviceRepository implements IDeviceRepository {
         networkType: device.networkType,
         appVersion: device.appVersion,
         isOnline: device.isOnline,
+        isTheftModeActive: device.isTheftModeActive,
       },
       create: {
         id: device.id,
@@ -32,6 +33,7 @@ export class PrismaDeviceRepository implements IDeviceRepository {
         networkType: device.networkType,
         appVersion: device.appVersion,
         isOnline: device.isOnline,
+        isTheftModeActive: device.isTheftModeActive,
         createdAt: device.createdAt,
       },
     });
@@ -52,6 +54,7 @@ export class PrismaDeviceRepository implements IDeviceRepository {
       networkType: raw.networkType,
       appVersion: raw.appVersion,
       isOnline: raw.isOnline,
+      isTheftModeActive: raw.isTheftModeActive,
       createdAt: raw.createdAt,
     });
   }
@@ -71,6 +74,7 @@ export class PrismaDeviceRepository implements IDeviceRepository {
         networkType: raw.networkType,
         appVersion: raw.appVersion,
         isOnline: raw.isOnline,
+        isTheftModeActive: raw.isTheftModeActive,
         createdAt: raw.createdAt,
       }),
     );

@@ -7,6 +7,7 @@ import { CommandsModule } from './modules/commands/commands.module';
 import { LocationsModule } from './modules/locations/locations.module';
 import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
 import { WebsocketsModule } from './shared/infrastructure/websockets/websockets.module';
+import { TheftModeModule } from './modules/theft-mode/theft-mode.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { WebsocketsModule } from './shared/infrastructure/websockets/websockets.
     DevicesModule,
     CommandsModule,
     LocationsModule,
+    TheftModeModule,
     PrismaModule,
     WebsocketsModule,
   ],

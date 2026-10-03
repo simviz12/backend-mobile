@@ -25,7 +25,7 @@ describe('RecordHeartbeatUseCase', () => {
   it('should throw ForbiddenException if wrong owner', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
       id: 'd1', ownerId: 'u2', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: null, lastSeenAt: new Date(), isOnline: true, createdAt: new Date(),
+      platform: 'P', fcmToken: null, lastSeenAt: new Date(), isOnline: true, isTheftModeActive: false, createdAt: new Date(),
     }));
     await expect(useCase.execute('u1', 'd1', {})).rejects.toThrow(ForbiddenException);
   });
@@ -33,7 +33,7 @@ describe('RecordHeartbeatUseCase', () => {
   it('should update heartbeat fields and save', async () => {
     const device = Device.create({
       id: 'd1', ownerId: 'u1', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: null, lastSeenAt: new Date(Date.now() - 100000), isOnline: false, createdAt: new Date(),
+      platform: 'P', fcmToken: null, lastSeenAt: new Date(Date.now() - 100000), isOnline: false, isTheftModeActive: false, createdAt: new Date(),
     });
     mockDeviceRepository.findById.mockResolvedValue(device);
 

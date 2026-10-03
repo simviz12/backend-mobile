@@ -27,6 +27,6 @@ import { CommandExpirationJob } from './infrastructure/jobs/command-expiration.j
       useClass: FcmAdapter,
     }
   ],
-  exports: [COMMAND_REPOSITORY],
+  exports: [COMMAND_REPOSITORY, CreateCommandUseCase],
 })
 export class CommandsModule {}

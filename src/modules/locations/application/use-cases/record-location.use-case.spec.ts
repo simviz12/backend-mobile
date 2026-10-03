@@ -25,7 +25,7 @@ describe('RecordLocationUseCase', () => {
   it('should throw ForbiddenException if wrong owner', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
       id: 'd1', ownerId: 'u2', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
+      platform: 'P', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true, isTheftModeActive: false }));
     await expect(useCase.execute('u1', 'd1', { lat: 4.6, lng: -74, recordedAt: new Date().toISOString() }))
       .rejects.toThrow(ForbiddenException);
   });
@@ -33,7 +33,7 @@ describe('RecordLocationUseCase', () => {
   it('should save location', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
       id: 'd1', ownerId: 'u1', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
+      platform: 'P', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true, isTheftModeActive: false }));
 
     const loc = await useCase.execute('u1', 'd1', {
       lat: 4.6097, lng: -74.0817, accuracy: 10, recordedAt: new Date().toISOString(),
@@ -47,7 +47,7 @@ describe('RecordLocationUseCase', () => {
   it('should reject invalid coordinates', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
       id: 'd1', ownerId: 'u1', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
+      platform: 'P', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true, isTheftModeActive: false }));
 
     await expect(useCase.execute('u1', 'd1', {
       lat: 200, lng: -74, recordedAt: new Date().toISOString(),

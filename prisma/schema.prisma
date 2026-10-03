@@ -44,11 +44,24 @@ model Device {
   networkType  String?
   appVersion   String?
   isOnline     Boolean    @default(true)
+  isTheftModeActive Boolean @default(false)
   createdAt    DateTime   @default(now())
   commands     Command[]
   locations    Location[]
+  theftLogs    TheftModeLog[]
 
   @@index([ownerId])
+}
+
+model TheftModeLog {
+  id         String   @id @default(uuid())
+  deviceId   String
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  action     String   // 'ACTIVATED' | 'DEACTIVATED'
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([deviceId])
 }
 
 enum CommandType {

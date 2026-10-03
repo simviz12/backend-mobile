@@ -111,3 +111,9 @@ This project strictly adheres to Clean Architecture:
 - Added full e2e test for the command flow: create -> FCM simulate -> ack -> realtime event.
 - Reviewed and added DB indexes for Device and Command.
 - Confirmed high code coverage in critical domain rules.
+
+## Day 16: Theft Mode
+- Added TheftModeModule with ActivateTheftModeUseCase and DeactivateTheftModeUseCase.
+- Added isTheftModeActive state to Device.
+- Logging of activation/deactivation via TheftModeLog.
+- Activation orchestrates multiple emergency commands (LOCK, RING, MESSAGE, LOCATE, THEFT_MODE).
