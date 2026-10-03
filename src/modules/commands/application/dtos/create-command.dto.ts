@@ -12,4 +12,12 @@ export class CreateCommandDto {
   @IsOptional()
   @IsObject()
   payload?: any;
+
+  @ApiPropertyOptional({ description: 'Device ID issuing the command (required for LOCK/WIPE)' })
+  @IsOptional()
+  sourceDeviceId?: string;
+
+  @ApiPropertyOptional({ description: 'User password re-confirmation (required for WIPE)' })
+  @IsOptional()
+  password?: string;
 }

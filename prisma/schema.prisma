@@ -74,6 +74,19 @@ enum CommandType {
   WIPE
 }
 
+model AuditLog {
+  id               String   @id @default(uuid())
+  userId           String
+  targetDeviceId   String
+  sourceDeviceId   String?
+  action           String
+  status           String
+  details          Json?
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+}
+
 enum CommandStatus {
   PENDING
   SENT

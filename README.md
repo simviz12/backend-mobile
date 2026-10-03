@@ -117,3 +117,8 @@ This project strictly adheres to Clean Architecture:
 - Added isTheftModeActive state to Device.
 - Logging of activation/deactivation via TheftModeLog.
 - Activation orchestrates multiple emergency commands (LOCK, RING, MESSAGE, LOCATE, THEFT_MODE).
+
+## Day 17: Wipe & Audit
+- Added AuditModule with AuditLog to record sensitive actions like WIPE and LOCK.
+- Enforced sourceDeviceId parameter to ensure only a CONTROLLER owned by the user can issue these commands.
+- Enforced Argon2 password re-confirmation before executing the WIPE command.

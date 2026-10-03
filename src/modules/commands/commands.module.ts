@@ -6,12 +6,13 @@ import { AckCommandUseCase } from './application/use-cases/ack-command.use-case'
 import { PrismaCommandRepository } from './infrastructure/repositories/prisma-command.repository';
 import { COMMAND_REPOSITORY } from './domain/repositories/command.repository.interface';
 import { DevicesModule } from '../devices/devices.module';
+import { UsersModule } from '../users/users.module';
 import { PUSH_NOTIFICATION_PORT } from '../../shared/application/ports/push-notification.port';
 import { FcmAdapter } from '../../shared/infrastructure/fcm/fcm.adapter';
 import { CommandExpirationJob } from './infrastructure/jobs/command-expiration.job';
 
 @Module({
-  imports: [DevicesModule],
+  imports: [DevicesModule, UsersModule],
   controllers: [CommandsController],
   providers: [
     CreateCommandUseCase,
