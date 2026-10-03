@@ -128,3 +128,16 @@ This project strictly adheres to Clean Architecture:
 - Added rate limiting using @nestjs/throttler (100 reqs/min).
 - Configured strict CORS in main.ts.
 - (Pending/Documented) 2FA TOTP module implementation to verify critical commands is drafted for next iterations.
+
+## Production Deployment (Release 1.0.0)
+
+1. Build the Docker image:
+   `ash
+   docker build -t guardian-backend .
+   `
+2. Set your .env variables (DATABASE_URL, JWT_SECRET, etc.).
+3. Run the container:
+   `ash
+   docker run -p 3000:3000 --env-file .env guardian-backend
+   `
+The entrypoint script automatically applies pending Prisma migrations on startup.

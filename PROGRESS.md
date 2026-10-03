@@ -38,3 +38,6 @@
 - Day 17 | feature/wipe-and-audit | PR Created | PENDING | Day 18
 
 - Day 18 | feature/security-2fa | PR Created | PENDING | Day 19
+
+- Day 19 | release/1.0.0 | Release Branch | PENDING | Day 20
+- Day 20 | main | Tag v1.0.0 | DONE | COMPLETED
