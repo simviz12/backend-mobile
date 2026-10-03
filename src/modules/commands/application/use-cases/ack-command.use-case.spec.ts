@@ -6,13 +6,17 @@ import { NotFoundException } from '@nestjs/common';
 describe('AckCommandUseCase', () => {
   let useCase: AckCommandUseCase;
   let mockCommandRepository: any;
+  let mockDeviceRepository: any;
+  let mockEventPublisher: any;
 
   beforeEach(() => {
     mockCommandRepository = {
       findById: jest.fn(),
       save: jest.fn(),
     };
-    useCase = new AckCommandUseCase(mockCommandRepository);
+    mockDeviceRepository = { findById: jest.fn() };
+    mockEventPublisher = { publishToUser: jest.fn() };
+    useCase = new AckCommandUseCase(mockCommandRepository, mockDeviceRepository, mockEventPublisher);
   });
 
   it('should throw NotFoundException if command not found', async () => {

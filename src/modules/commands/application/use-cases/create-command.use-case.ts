@@ -5,6 +5,8 @@ import { DEVICE_REPOSITORY } from '../../../devices/domain/repositories/device.r
 import type { IDeviceRepository } from '../../../devices/domain/repositories/device.repository.interface';
 import { PUSH_NOTIFICATION_PORT } from '../../../../shared/application/ports/push-notification.port';
 import type { IPushNotificationPort } from '../../../../shared/application/ports/push-notification.port';
+import { EVENT_PUBLISHER_PORT } from '../../../../shared/application/ports/event-publisher.port';
+import type { IEventPublisherPort } from '../../../../shared/application/ports/event-publisher.port';
 import { Command, CommandStatus } from '../../domain/entities/command.entity';
 import { CreateCommandDto } from '../dtos/create-command.dto';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +19,7 @@ export class CreateCommandUseCase {
     @Inject(COMMAND_REPOSITORY) private readonly commandRepository: ICommandRepository,
     @Inject(DEVICE_REPOSITORY) private readonly deviceRepository: IDeviceRepository,
     @Inject(PUSH_NOTIFICATION_PORT) private readonly pushPort: IPushNotificationPort,
+    @Inject(EVENT_PUBLISHER_PORT) private readonly eventPublisher: IEventPublisherPort,
   ) {}
 
   async execute(userId: string, targetDeviceId: string, dto: CreateCommandDto): Promise<Command> {
@@ -64,6 +67,11 @@ export class CreateCommandUseCase {
     } else {
       this.logger.warn(`Device ${device.id} has no fcmToken. Command ${command.id} remains PENDING.`);
     }
+
+    this.eventPublisher.publishToUser(userId, 'command.updated', {
+      id: command.id,
+      status: command.status,
+    });
 
     return command;
   }

@@ -28,3 +28,5 @@
 - Day 12 | feature/device-status | PR Created | PENDING | Day 13
 
 - Day 13 | feature/realtime-gateway | PR Created | PENDING | Day 14
+
+- Day 14 | feature/realtime-commands | PR Created | PENDING | Day 15

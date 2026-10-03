@@ -43,7 +43,11 @@ export class Command {
   get updatedAt(): Date { return this.props.updatedAt; }
 
   // State Machine Transitions
-  private ensureValidTransition(targetStatus: CommandStatus): void {
+  private ensureValidTransition(targetStatus: CommandStatus): boolean {
+    if (this.props.status === targetStatus) {
+      return false; // Already in target state (idempotent)
+    }
+
     const validTransitions: Record<CommandStatus, CommandStatus[]> = {
       [CommandStatus.PENDING]: [CommandStatus.SENT, CommandStatus.FAILED, CommandStatus.EXPIRED],
       [CommandStatus.SENT]: [CommandStatus.DELIVERED, CommandStatus.FAILED, CommandStatus.EXPIRED, CommandStatus.EXECUTED], // Sometimes it jumps straight to EXECUTED
@@ -53,38 +57,50 @@ export class Command {
       [CommandStatus.EXPIRED]: [],
     };
 
+    // If it's EXECUTED but we get a DELIVERED ack, just ignore it (idempotent for delayed acks)
+    if (this.props.status === CommandStatus.EXECUTED && targetStatus === CommandStatus.DELIVERED) {
+      return false;
+    }
+
     if (!validTransitions[this.props.status].includes(targetStatus)) {
       throw new Error(`Invalid state transition from ${this.props.status} to ${targetStatus}`);
     }
+
+    return true; // Valid transition
   }
 
-  markAsSent(): void {
-    this.ensureValidTransition(CommandStatus.SENT);
+  markAsSent(): boolean {
+    if (!this.ensureValidTransition(CommandStatus.SENT)) return false;
     this.props.status = CommandStatus.SENT;
     this.props.updatedAt = new Date();
+    return true;
   }
 
-  markAsDelivered(): void {
-    this.ensureValidTransition(CommandStatus.DELIVERED);
+  markAsDelivered(): boolean {
+    if (!this.ensureValidTransition(CommandStatus.DELIVERED)) return false;
     this.props.status = CommandStatus.DELIVERED;
     this.props.updatedAt = new Date();
+    return true;
   }
 
-  markAsExecuted(): void {
-    this.ensureValidTransition(CommandStatus.EXECUTED);
+  markAsExecuted(): boolean {
+    if (!this.ensureValidTransition(CommandStatus.EXECUTED)) return false;
     this.props.status = CommandStatus.EXECUTED;
     this.props.updatedAt = new Date();
+    return true;
   }
 
-  markAsFailed(): void {
-    this.ensureValidTransition(CommandStatus.FAILED);
+  markAsFailed(): boolean {
+    if (!this.ensureValidTransition(CommandStatus.FAILED)) return false;
     this.props.status = CommandStatus.FAILED;
     this.props.updatedAt = new Date();
+    return true;
   }
 
-  markAsExpired(): void {
-    this.ensureValidTransition(CommandStatus.EXPIRED);
+  markAsExpired(): boolean {
+    if (!this.ensureValidTransition(CommandStatus.EXPIRED)) return false;
     this.props.status = CommandStatus.EXPIRED;
     this.props.updatedAt = new Date();
+    return true;
   }
 }

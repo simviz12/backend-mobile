@@ -9,12 +9,14 @@ describe('CreateCommandUseCase', () => {
   let mockCommandRepository: any;
   let mockDeviceRepository: any;
   let mockPushPort: any;
+  let mockEventPublisher: any;
 
   beforeEach(() => {
     mockCommandRepository = { save: jest.fn() };
     mockDeviceRepository = { findById: jest.fn() };
     mockPushPort = { send: jest.fn() };
-    useCase = new CreateCommandUseCase(mockCommandRepository, mockDeviceRepository, mockPushPort);
+    mockEventPublisher = { publishToUser: jest.fn() };
+    useCase = new CreateCommandUseCase(mockCommandRepository, mockDeviceRepository, mockPushPort, mockEventPublisher);
   });
 
   it('should throw NotFoundException if device missing', async () => {
