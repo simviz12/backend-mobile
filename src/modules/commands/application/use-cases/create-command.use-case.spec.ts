@@ -25,16 +25,14 @@ describe('CreateCommandUseCase', () => {
 
   it('should throw ForbiddenException if wrong owner', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
-      id: 'dev-1', ownerId: 'user-2', name: 'N', mode: DeviceMode.PROTECTED, platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date()
-    }));
+      id: 'dev-1', ownerId: 'user-2', name: 'N', mode: DeviceMode.PROTECTED, platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
     await expect(useCase.execute('user-1', 'dev-1', { commandType: CommandType.RING }))
       .rejects.toThrow(ForbiddenException);
   });
 
   it('should create command and send push successfully', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
-      id: 'dev-1', ownerId: 'user-1', name: 'N', mode: DeviceMode.PROTECTED, platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date()
-    }));
+      id: 'dev-1', ownerId: 'user-1', name: 'N', mode: DeviceMode.PROTECTED, platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
     mockPushPort.send.mockResolvedValue(true);
 
     const cmd = await useCase.execute('user-1', 'dev-1', { commandType: CommandType.RING });
@@ -47,8 +45,7 @@ describe('CreateCommandUseCase', () => {
 
   it('should mark as FAILED if push sending fails', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
-      id: 'dev-1', ownerId: 'user-1', name: 'N', mode: DeviceMode.PROTECTED, platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date()
-    }));
+      id: 'dev-1', ownerId: 'user-1', name: 'N', mode: DeviceMode.PROTECTED, platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
     mockPushPort.send.mockResolvedValue(false);
 
     const cmd = await useCase.execute('user-1', 'dev-1', { commandType: CommandType.RING });
@@ -56,3 +53,5 @@ describe('CreateCommandUseCase', () => {
     expect(cmd.status).toBe(CommandStatus.FAILED);
   });
 });
+
+

@@ -15,6 +15,10 @@ export class PrismaDeviceRepository implements IDeviceRepository {
         name: device.name,
         fcmToken: device.fcmToken,
         lastSeenAt: device.lastSeenAt,
+        batteryLevel: device.batteryLevel,
+        networkType: device.networkType,
+        appVersion: device.appVersion,
+        isOnline: device.isOnline,
       },
       create: {
         id: device.id,
@@ -24,6 +28,10 @@ export class PrismaDeviceRepository implements IDeviceRepository {
         platform: device.platform,
         fcmToken: device.fcmToken,
         lastSeenAt: device.lastSeenAt,
+        batteryLevel: device.batteryLevel,
+        networkType: device.networkType,
+        appVersion: device.appVersion,
+        isOnline: device.isOnline,
         createdAt: device.createdAt,
       },
     });
@@ -40,6 +48,10 @@ export class PrismaDeviceRepository implements IDeviceRepository {
       platform: raw.platform,
       fcmToken: raw.fcmToken,
       lastSeenAt: raw.lastSeenAt,
+      batteryLevel: raw.batteryLevel,
+      networkType: raw.networkType,
+      appVersion: raw.appVersion,
+      isOnline: raw.isOnline,
       createdAt: raw.createdAt,
     });
   }
@@ -55,6 +67,10 @@ export class PrismaDeviceRepository implements IDeviceRepository {
         platform: raw.platform,
         fcmToken: raw.fcmToken,
         lastSeenAt: raw.lastSeenAt,
+        batteryLevel: raw.batteryLevel,
+        networkType: raw.networkType,
+        appVersion: raw.appVersion,
+        isOnline: raw.isOnline,
         createdAt: raw.createdAt,
       }),
     );

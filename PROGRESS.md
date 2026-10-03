@@ -23,3 +23,6 @@
 - Day 8 | feature/commands-core | PR Created | PENDING | Day 9
 
 - Day 9 | feature/fcm-delivery | PR Created | PENDING | Day 10
+
+- Day 11 | feature/locations | PR Created | PENDING | Day 12
+- Day 12 | feature/device-status | PR Created | PENDING | Day 13

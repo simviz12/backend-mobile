@@ -26,8 +26,7 @@ describe('Device Management Use Cases', () => {
 
   const createDevice = (ownerId: string) => Device.create({
     id: 'dev-1', ownerId, name: 'Phone', mode: DeviceMode.PROTECTED,
-    platform: 'Android', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date()
-  });
+    platform: 'Android', fcmToken: null, lastSeenAt: new Date(), createdAt: new Date(), isOnline: true });
 
   describe('GetDevicesUseCase', () => {
     it('should return devices', async () => {
@@ -73,3 +72,5 @@ describe('Device Management Use Cases', () => {
     });
   });
 });
+
+
