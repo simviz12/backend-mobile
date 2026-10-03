@@ -11,6 +11,10 @@ export interface DeviceProps {
   platform: string;
   fcmToken: string | null;
   lastSeenAt: Date;
+  batteryLevel?: number | null;
+  networkType?: string | null;
+  appVersion?: string | null;
+  isOnline: boolean;
   createdAt: Date;
 }
 
@@ -21,40 +25,33 @@ export class Device {
     return new Device(props);
   }
 
-  get id(): string {
-    return this.props.id;
-  }
-
-  get ownerId(): string {
-    return this.props.ownerId;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-
-  get mode(): DeviceMode {
-    return this.props.mode;
-  }
-
-  get platform(): string {
-    return this.props.platform;
-  }
-
-  get fcmToken(): string | null {
-    return this.props.fcmToken;
-  }
-
-  get lastSeenAt(): Date {
-    return this.props.lastSeenAt;
-  }
-
-  get createdAt(): Date {
-    return this.props.createdAt;
-  }
+  get id(): string { return this.props.id; }
+  get ownerId(): string { return this.props.ownerId; }
+  get name(): string { return this.props.name; }
+  get mode(): DeviceMode { return this.props.mode; }
+  get platform(): string { return this.props.platform; }
+  get fcmToken(): string | null { return this.props.fcmToken; }
+  get lastSeenAt(): Date { return this.props.lastSeenAt; }
+  get batteryLevel(): number | null | undefined { return this.props.batteryLevel; }
+  get networkType(): string | null | undefined { return this.props.networkType; }
+  get appVersion(): string | null | undefined { return this.props.appVersion; }
+  get isOnline(): boolean { return this.props.isOnline; }
+  get createdAt(): Date { return this.props.createdAt; }
 
   updateLastSeen(): void {
     this.props.lastSeenAt = new Date();
+    this.props.isOnline = true;
+  }
+
+  recordHeartbeat(batteryLevel?: number, networkType?: string, appVersion?: string): void {
+    this.props.batteryLevel = batteryLevel ?? this.props.batteryLevel;
+    this.props.networkType = networkType ?? this.props.networkType;
+    this.props.appVersion = appVersion ?? this.props.appVersion;
+    this.updateLastSeen();
+  }
+
+  markOffline(): void {
+    this.props.isOnline = false;
   }
 
   updateFcmToken(token: string): void {

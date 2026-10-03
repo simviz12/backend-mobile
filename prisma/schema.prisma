@@ -32,17 +32,21 @@ enum DeviceMode {
 }
 
 model Device {
-  id         String     @id @default(uuid())
-  ownerId    String
-  owner      User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  name       String
-  mode       DeviceMode
-  platform   String
-  fcmToken   String?
-  lastSeenAt DateTime   @default(now())
-  createdAt  DateTime   @default(now())
-  commands   Command[]
-  locations  Location[]
+  id           String     @id @default(uuid())
+  ownerId      String
+  owner        User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name         String
+  mode         DeviceMode
+  platform     String
+  fcmToken     String?
+  lastSeenAt   DateTime   @default(now())
+  batteryLevel Int?
+  networkType  String?
+  appVersion   String?
+  isOnline     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  commands     Command[]
+  locations    Location[]
 }
 
 enum CommandType {

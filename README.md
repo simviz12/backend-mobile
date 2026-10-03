@@ -90,3 +90,8 @@ This project strictly adheres to Clean Architecture:
 - GET /devices/:id/locations?from=&to= with pagination.
 - Coordinate range validation in domain entity.
 - DB index on (deviceId, recordedAt).
+
+## Day 12: Device Status & Heartbeat
+- POST /devices/:id/status to report battery, network, and app version.
+- Device now has isOnline flag updated on heartbeat.
+- Cron job marks devices offline if not seen for 5 minutes.
