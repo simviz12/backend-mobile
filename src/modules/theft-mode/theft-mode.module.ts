@@ -6,9 +6,10 @@ import { THEFT_MODE_LOG_REPOSITORY } from './domain/repositories/theft-mode-log.
 import { PrismaTheftModeLogRepository } from './infrastructure/repositories/prisma-theft-mode-log.repository';
 import { CommandsModule } from '../commands/commands.module';
 import { DevicesModule } from '../devices/devices.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [CommandsModule, DevicesModule],
+  imports: [CommandsModule, DevicesModule, AuthModule],
   controllers: [TheftModeController],
   providers: [
     ActivateTheftModeUseCase,

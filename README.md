@@ -141,3 +141,91 @@ This project strictly adheres to Clean Architecture:
    docker run -p 3000:3000 --env-file .env guardian-backend
    `
 The entrypoint script automatically applies pending Prisma migrations on startup.
+
+
+---
+
+## 📱 Guía Completa de Integración con el Frontend (Flutter / Web)
+
+Esta sección explica detalladamente cómo conectar el frontend (`guardian-mobile` en Flutter o portal web) con este backend para tener el sistema funcionando de extremo a extremo.
+
+### 1. URLs Base y Configuración de Red
+Por defecto, el backend corre en el puerto `3000`. Dependiendo del entorno donde corras la app móvil, configura la URL base en el cliente:
+
+| Entorno del Cliente Móvil | Base URL Recomendada | Nota |
+|---|---|---|
+| Emulador Android Oficial | `http://10.0.2.2:3000` | `10.0.2.2` apunta al `localhost` del host de desarrollo. |
+| Emulador Genymotion | `http://10.0.3.2:3000` | Red virtual de Genymotion. |
+| Dispositivo Físico Android | `http://<IP_LOCAL_DE_TU_PC>:3000` | PC y móvil deben estar en la misma red Wi-Fi. |
+| Web / Desktop | `http://localhost:3000` | Mismo equipo. |
+
+En el proyecto Flutter (`guardian-mobile`), el archivo `lib/core/network/api_config.dart` contiene la configuración de URL:
+```dart
+class ApiConfig {
+  static const String baseUrl = 'http://10.0.2.2:3000'; // Para Emulador Android
+}
+```
+
+---
+
+### 2. Flujo Completo de Integración Paso a Paso
+
+1. **Autenticación Inicial:**
+   - La app solicita registro (`POST /auth/register`) o inicio de sesión (`POST /auth/login`).
+   - El backend entrega `{ "accessToken": "...", "refreshToken": "..." }`.
+   - El frontend almacena el `accessToken` en almacenamiento seguro (`flutter_secure_storage`).
+
+2. **Conexión en Tiempo Real (Socket.IO):**
+   - El frontend establece conexión con el namespace `/realtime` pasando el `accessToken`:
+     ```dart
+     import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+     IO.Socket socket = IO.io('http://10.0.2.2:3000/realtime', <String, dynamic>{
+       'transports': ['websocket'],
+       'auth': {'token': accessToken},
+     });
+     ```
+   - El backend une el socket a la sala privada `user:{userId}`.
+   - Escucha reactiva en el cliente:
+     - `command.updated`: Se dispara cuando cambia el estado de un comando (`SENT`, `EXECUTED`, `FAILED`).
+     - `location.updated`: Se dispara cuando llega una nueva coordenada GPS de un dispositivo.
+     - `device.online` / `device.offline`: Notifica cambios de presencia.
+
+3. **Vinculación de Dispositivos (`POST /devices`):**
+   - El teléfono reporta su rol (`PROTECTED` para el teléfono a cuidar, o `CONTROLLER` para el teléfono del administrador).
+   - Registra su `fcmToken` (token de Firebase Cloud Messaging) para habilitar envíos push.
+
+4. **Heartbeat y Telemetría en Segundo Plano:**
+   - Cada 1 a 3 minutos, el dispositivo protegido envía `POST /devices/:id/status` con nivel de batería y red.
+   - Envía coordenadas con `POST /devices/:id/locations`.
+
+5. **Envío y Ejecución de Comandos Remotos:**
+   - El usuario envía un comando desde la app (`POST /devices/:id/commands`):
+     - `RING`: Alarma sonora a volumen máximo.
+     - `LOCATE`: Solicita reporte inmediato de ubicación.
+     - `MESSAGE`: Muestra mensaje en pantalla.
+     - `VIBRATE`: Vibración continua.
+     - `LOCK`: Bloqueo de pantalla (requiere `sourceDeviceId` de un `CONTROLLER`).
+     - `WIPE`: Borrado remoto de fábrica (requiere `sourceDeviceId` y confirmación de `password`).
+   - El backend despacha el comando vía Firebase Cloud Messaging (FCM) con alta prioridad.
+   - El teléfono destino recibe el push, ejecuta la acción nativa y confirma con `PATCH /devices/:id/commands/:cmdId/ack` enviando `status: "EXECUTED"`.
+
+6. **Modo Robo de Emergencia:**
+   - `POST /devices/:id/theft-mode`: Activa simultáneamente el bloqueo, sonido de alarma, mensaje disuasivo y rastreo geográfico.
+
+---
+
+### 3. Estado de Claves de API y Credenciales
+
+#### ¿Hace falta alguna clave de API para probar el sistema hoy?
+**NO, ninguna clave externa es obligatoria para desarrollo ni pruebas locales.**
+
+El backend fue construido bajo principios de arquitectura hexagonal (puertos y adaptadores):
+1. **Base de Datos:** Ya está lista localmente vía Docker Compose (`postgresql://postgres:password@localhost:5432/guardian`).
+2. **Seguridad JWT:** Ya viene configurada en el archivo `.env` (`JWT_SECRET`).
+3. **Firebase Cloud Messaging (FCM):** Cuenta con un **modo simulado automático (Dry-Run)**. Si la variable `FIREBASE_CREDENTIALS` no está configurada, el adaptador `FcmAdapter` simula exitosamente el envío de notificaciones en consola y permite que el ciclo de vida de los comandos funcione sin dependencias externas.
+4. **Para Despliegue en Dispositivos Físicos Reales (Opcional):**
+   - Solo cuando desees que el push llegue a antenas reales de Google en producción, necesitarás descargar el archivo `serviceAccountKey.json` de tu consola de Firebase y agregarlo a `.env`:
+     ```env
+     FIREBASE_CREDENTIALS=/ruta/a/serviceAccountKey.json
+     ```
