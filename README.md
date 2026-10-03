@@ -100,3 +100,9 @@ This project strictly adheres to Clean Architecture:
 - WebSocket /realtime with JWT Auth.
 - Rooms by user/device.
 - Published events: device.online, device.offline, location.updated.
+
+## Day 14: Realtime Commands & Idempotency
+- Published command.updated event from Create and Ack use cases.
+- Published command.updated when a command expires in the background cron job.
+- Added idempotency to command state machine to gracefully handle duplicate acks.
+- Added concurrency tests for command states.
