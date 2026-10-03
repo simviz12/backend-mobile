@@ -6,6 +6,7 @@ import { DevicesModule } from './modules/devices/devices.module';
 import { CommandsModule } from './modules/commands/commands.module';
 import { LocationsModule } from './modules/locations/locations.module';
 import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
+import { WebsocketsModule } from './shared/infrastructure/websockets/websockets.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
     CommandsModule,
     LocationsModule,
     PrismaModule,
+    WebsocketsModule,
   ],
   controllers: [],
   providers: [],

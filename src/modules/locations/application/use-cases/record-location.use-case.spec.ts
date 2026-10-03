@@ -7,11 +7,13 @@ describe('RecordLocationUseCase', () => {
   let useCase: RecordLocationUseCase;
   let mockLocationRepository: any;
   let mockDeviceRepository: any;
+  let mockEventPublisher: any;
 
   beforeEach(() => {
     mockLocationRepository = { save: jest.fn() };
     mockDeviceRepository = { findById: jest.fn() };
-    useCase = new RecordLocationUseCase(mockLocationRepository, mockDeviceRepository);
+    mockEventPublisher = { publishToUser: jest.fn() };
+    useCase = new RecordLocationUseCase(mockLocationRepository, mockDeviceRepository, mockEventPublisher);
   });
 
   it('should throw NotFoundException if device missing', async () => {
