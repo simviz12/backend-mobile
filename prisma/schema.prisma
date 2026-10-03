@@ -47,6 +47,8 @@ model Device {
   createdAt    DateTime   @default(now())
   commands     Command[]
   locations    Location[]
+
+  @@index([ownerId])
 }
 
 enum CommandType {
@@ -77,6 +79,8 @@ model Command {
   status         CommandStatus @default(PENDING)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+
+  @@index([targetDeviceId, createdAt])
 }
 
 model Location {
