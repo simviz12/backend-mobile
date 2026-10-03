@@ -366,3 +366,17 @@ components:
         properties:
           deviceId:
             type: string
+    TheftModeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+  responses:
+    TheftModeSuccess:
+      description: Theft mode changed successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TheftModeResponse'

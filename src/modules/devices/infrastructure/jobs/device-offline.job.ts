@@ -24,14 +24,14 @@ export class DeviceOfflineJob {
     const devicesToMark = await this.prisma.device.findMany({
       where: {
         lastSeenAt: { lt: offlineThreshold },
-        isOnline: true,
+        isOnline: true,isTheftModeActive: false,
       },
     });
 
     if (devicesToMark.length > 0) {
       await this.prisma.device.updateMany({
         where: { id: { in: devicesToMark.map(d => d.id) } },
-        data: { isOnline: false },
+        data: { isOnline: false, isTheftModeActive: false },
       });
 
       for (const device of devicesToMark) {

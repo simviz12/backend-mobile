@@ -32,3 +32,5 @@
 - Day 14 | feature/realtime-commands | PR Created | PENDING | Day 15
 
 - Day 15 | feature/week3-integration | PR Created | PENDING | Day 16
+
+- Day 16 | feature/theft-mode | PR Created | PENDING | Day 17

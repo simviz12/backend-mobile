@@ -23,14 +23,14 @@ describe('GetCommandsUseCase', () => {
   it('should throw ForbiddenException if wrong owner', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
       id: 'dev-1', ownerId: 'user-2', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
+      platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true, isTheftModeActive: false }));
     await expect(useCase.execute('user-1', 'dev-1')).rejects.toThrow(ForbiddenException);
   });
 
   it('should return paginated commands', async () => {
     mockDeviceRepository.findById.mockResolvedValue(Device.create({
       id: 'dev-1', ownerId: 'user-1', name: 'N', mode: DeviceMode.PROTECTED,
-      platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true }));
+      platform: 'P', fcmToken: 'T', lastSeenAt: new Date(), createdAt: new Date(), isOnline: true, isTheftModeActive: false }));
 
     const mockResult = {
       data: [Command.create({
