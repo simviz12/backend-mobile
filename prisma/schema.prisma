@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  refreshTokens RefreshToken[]
+  devices       Device[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+enum DeviceMode {
+  PROTECTED
+  CONTROLLER
+}
+
+model Device {
+  id           String     @id @default(uuid())
+  ownerId      String
+  owner        User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name         String
+  mode         DeviceMode
+  platform     String
+  fcmToken     String?
+  lastSeenAt   DateTime   @default(now())
+  batteryLevel Int?
+  networkType  String?
+  appVersion   String?
+  isOnline     Boolean    @default(true)
+  isTheftModeActive Boolean @default(false)
+  createdAt    DateTime   @default(now())
+  commands     Command[]
+  locations    Location[]
+  theftLogs    TheftModeLog[]
+
+  @@index([ownerId])
+}
+
+model TheftModeLog {
+  id         String   @id @default(uuid())
+  deviceId   String
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  action     String   // 'ACTIVATED' | 'DEACTIVATED'
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([deviceId])
+}
+
+enum CommandType {
+  RING
+  LOCK
+  MESSAGE
+  VIBRATE
+  LOCATE
+  THEFT_MODE
+  WIPE
+}
+
+model AuditLog {
+  id               String   @id @default(uuid())
+  userId           String
+  targetDeviceId   String
+  sourceDeviceId   String?
+  action           String
+  status           String
+  details          Json?
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+}
+
+enum CommandStatus {
+  PENDING
+  SENT
+  DELIVERED
+  EXECUTED
+  FAILED
+  EXPIRED
+}
+
+model Command {
+  id             String        @id @default(uuid())
+  targetDeviceId String
+  targetDevice   Device        @relation(fields: [targetDeviceId], references: [id], onDelete: Cascade)
+  commandType    CommandType
+  payload        Json?
+  status         CommandStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([targetDeviceId, createdAt])
+}
+
+model Location {
+  id         String   @id @default(uuid())
+  deviceId   String
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  lat        Float
+  lng        Float
+  accuracy   Float?
+  recordedAt DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([deviceId, recordedAt])
+}
