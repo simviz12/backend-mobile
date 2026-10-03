@@ -3,6 +3,8 @@ import { LOCATION_REPOSITORY } from '../../domain/repositories/location.reposito
 import type { ILocationRepository } from '../../domain/repositories/location.repository.interface';
 import { DEVICE_REPOSITORY } from '../../../devices/domain/repositories/device.repository.interface';
 import type { IDeviceRepository } from '../../../devices/domain/repositories/device.repository.interface';
+import { EVENT_PUBLISHER_PORT } from '../../../../shared/application/ports/event-publisher.port';
+import type { IEventPublisherPort } from '../../../../shared/application/ports/event-publisher.port';
 import { Location } from '../../domain/entities/location.entity';
 import { CreateLocationDto } from '../dtos/create-location.dto';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,6 +14,7 @@ export class RecordLocationUseCase {
   constructor(
     @Inject(LOCATION_REPOSITORY) private readonly locationRepository: ILocationRepository,
     @Inject(DEVICE_REPOSITORY) private readonly deviceRepository: IDeviceRepository,
+    @Inject(EVENT_PUBLISHER_PORT) private readonly eventPublisher: IEventPublisherPort,
   ) {}
 
   async execute(userId: string, deviceId: string, dto: CreateLocationDto): Promise<Location> {
@@ -30,6 +33,15 @@ export class RecordLocationUseCase {
     });
 
     await this.locationRepository.save(location);
+
+    this.eventPublisher.publishToUser(userId, 'location.updated', {
+      deviceId,
+      lat: location.lat,
+      lng: location.lng,
+      accuracy: location.accuracy,
+      recordedAt: location.recordedAt,
+    });
+
     return location;
   }
 }

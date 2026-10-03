@@ -6,13 +6,15 @@ import { DeviceMode, Device } from '../../domain/entities/device.entity';
 describe('RecordHeartbeatUseCase', () => {
   let useCase: RecordHeartbeatUseCase;
   let mockDeviceRepository: any;
+  let mockEventPublisher: any;
 
   beforeEach(() => {
     mockDeviceRepository = {
       findById: jest.fn(),
       save: jest.fn(),
     };
-    useCase = new RecordHeartbeatUseCase(mockDeviceRepository);
+    mockEventPublisher = { publishToUser: jest.fn(), publishToDevice: jest.fn() };
+    useCase = new RecordHeartbeatUseCase(mockDeviceRepository, mockEventPublisher);
   });
 
   it('should throw NotFoundException if device missing', async () => {

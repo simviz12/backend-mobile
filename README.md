@@ -95,3 +95,8 @@ This project strictly adheres to Clean Architecture:
 - POST /devices/:id/status to report battery, network, and app version.
 - Device now has isOnline flag updated on heartbeat.
 - Cron job marks devices offline if not seen for 5 minutes.
+
+## Day 13: Realtime Gateway
+- WebSocket /realtime with JWT Auth.
+- Rooms by user/device.
+- Published events: device.online, device.offline, location.updated.

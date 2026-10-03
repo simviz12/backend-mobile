@@ -329,3 +329,40 @@ paths:
       responses:
         '200':
           description: System is running
+
+components:
+  messages:
+    CommandUpdated:
+      summary: Command status was updated
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+          status:
+            type: string
+    LocationUpdated:
+      summary: New location recorded
+      payload:
+        type: object
+        properties:
+          deviceId:
+            type: string
+          lat:
+            type: number
+          lng:
+            type: number
+    DeviceOnline:
+      summary: Device came online
+      payload:
+        type: object
+        properties:
+          deviceId:
+            type: string
+    DeviceOffline:
+      summary: Device went offline
+      payload:
+        type: object
+        properties:
+          deviceId:
+            type: string
