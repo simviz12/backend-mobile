@@ -106,3 +106,8 @@ This project strictly adheres to Clean Architecture:
 - Published command.updated when a command expires in the background cron job.
 - Added idempotency to command state machine to gracefully handle duplicate acks.
 - Added concurrency tests for command states.
+
+## Day 15: Week 3 Integration
+- Added full e2e test for the command flow: create -> FCM simulate -> ack -> realtime event.
+- Reviewed and added DB indexes for Device and Command.
+- Confirmed high code coverage in critical domain rules.
