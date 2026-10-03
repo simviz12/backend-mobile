@@ -36,3 +36,5 @@
 - Day 16 | feature/theft-mode | PR Created | PENDING | Day 17
 
 - Day 17 | feature/wipe-and-audit | PR Created | PENDING | Day 18
+
+- Day 18 | feature/security-2fa | PR Created | PENDING | Day 19

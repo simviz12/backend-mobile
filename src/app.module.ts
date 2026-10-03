@@ -9,9 +9,15 @@ import { PrismaModule } from './shared/infrastructure/prisma/prisma.module';
 import { WebsocketsModule } from './shared/infrastructure/websockets/websockets.module';
 import { TheftModeModule } from './modules/theft-mode/theft-mode.module';
 import { AuditModule } from './modules/audit/audit.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 100,
+    }]),
     ScheduleModule.forRoot(),
     AuthModule,
     UsersModule,
@@ -24,6 +30,11 @@ import { AuditModule } from './modules/audit/audit.module';
     WebsocketsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    }
+  ],
 })
 export class AppModule {}

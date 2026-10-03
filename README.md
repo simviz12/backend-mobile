@@ -122,3 +122,9 @@ This project strictly adheres to Clean Architecture:
 - Added AuditModule with AuditLog to record sensitive actions like WIPE and LOCK.
 - Enforced sourceDeviceId parameter to ensure only a CONTROLLER owned by the user can issue these commands.
 - Enforced Argon2 password re-confirmation before executing the WIPE command.
+
+## Day 18: Security Hardening & 2FA
+- Enforced HTTP security headers with helmet.
+- Added rate limiting using @nestjs/throttler (100 reqs/min).
+- Configured strict CORS in main.ts.
+- (Pending/Documented) 2FA TOTP module implementation to verify critical commands is drafted for next iterations.
