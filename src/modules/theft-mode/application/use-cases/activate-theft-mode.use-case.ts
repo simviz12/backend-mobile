@@ -30,7 +30,7 @@ export class ActivateTheftModeUseCase {
 
     // Orchestrate existing commands
     try {
-      await this.createCommandUseCase.execute(userId, deviceId, { commandType: CommandType.LOCK });
+      await this.createCommandUseCase.execute(userId, deviceId, { commandType: CommandType.LOCK, sourceDeviceId: 'SYSTEM' });
       await this.createCommandUseCase.execute(userId, deviceId, { commandType: CommandType.RING });
       await this.createCommandUseCase.execute(userId, deviceId, { 
         commandType: CommandType.MESSAGE, 

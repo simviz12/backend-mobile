@@ -66,7 +66,7 @@ describe('ActivateTheftModeUseCase', () => {
     expect(mockTheftLogRepository.logAction).toHaveBeenCalledWith('dev-1', 'ACTIVATED', expect.any(String));
 
     // Should orchestrate commands
-    expect(mockCreateCommandUseCase.execute).toHaveBeenCalledWith('user-1', 'dev-1', { commandType: CommandType.LOCK });
+    expect(mockCreateCommandUseCase.execute).toHaveBeenCalledWith('user-1', 'dev-1', { commandType: CommandType.LOCK, sourceDeviceId: 'SYSTEM' });
     expect(mockCreateCommandUseCase.execute).toHaveBeenCalledWith('user-1', 'dev-1', { commandType: CommandType.RING });
     expect(mockCreateCommandUseCase.execute).toHaveBeenCalledWith('user-1', 'dev-1', expect.objectContaining({ commandType: CommandType.MESSAGE }));
     expect(mockCreateCommandUseCase.execute).toHaveBeenCalledWith('user-1', 'dev-1', { commandType: CommandType.LOCATE });

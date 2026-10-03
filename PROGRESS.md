@@ -34,3 +34,5 @@
 - Day 15 | feature/week3-integration | PR Created | PENDING | Day 16
 
 - Day 16 | feature/theft-mode | PR Created | PENDING | Day 17
+
+- Day 17 | feature/wipe-and-audit | PR Created | PENDING | Day 18
